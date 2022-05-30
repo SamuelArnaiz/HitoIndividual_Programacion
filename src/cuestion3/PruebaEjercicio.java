@@ -89,7 +89,7 @@ public class PruebaEjercicio {
 			st = c.createStatement();
 			
 			ResultSet r = st.executeQuery("SELECT * FROM productos");
-			
+			System.out.println("--------Registros------------");
 			while(r.next()) {
 				System.out.println("ID: " + r.getInt("idProducto"));
 				System.out.println("Nombre: " + r.getString("nombre"));
@@ -103,7 +103,10 @@ public class PruebaEjercicio {
 			System.out.println("Problemas con la conexión a la BBDD");
 		}
 	}
-	
+	/**
+	 * Inserta en la BBDD un registro
+	 * @param Connection con BBDD
+	 */
 	public static void insertar(Connection c) {
 		try {
 			Statement st = c.createStatement();
@@ -120,12 +123,15 @@ public class PruebaEjercicio {
 				disponible = true;
 			}else disponible = false;
 			
-			String add = "INSERT INTO productos (nombre,fechaEnvasado,unidades,precio,disponible) VALUES('"+ nombre+"','"+ fechaEnvasado+"',"+unidades+","+precio +
-					","+ disponible+")";
-			st.executeUpdate(add);
+			String add = "INSERT INTO productos (nombre,fechaEnvasado,unidades,precio,disponible) VALUES('"+ nombre
+					+"','"+ fechaEnvasado+"',"+unidades+","+precio +","+ disponible+")";
+			
+			if(st.executeUpdate(add) == 1) {
+				System.out.println("Añadido el registro");
+			}else System.out.println("No se ha podido añadir");
+			
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("Problema con la conexión a la BBDD");
 		}
 	}
 	/**
