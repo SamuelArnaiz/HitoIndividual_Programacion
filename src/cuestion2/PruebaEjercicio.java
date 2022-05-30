@@ -6,8 +6,8 @@ public class PruebaEjercicio {
 	public static void main(String[] args) {
 		
 		double nota=0;
-		File preguntas = new File("preguntas.txt");
-		File respuestas = new File("respuestas.txt");
+		File preguntas = new File("Documentos/preguntas.txt");
+		File respuestas = new File("Documentos/respuestas.txt");
 		
 		if(preguntas.exists()&&respuestas.exists()) {
 			

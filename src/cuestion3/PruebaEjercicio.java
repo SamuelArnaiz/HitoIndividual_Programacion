@@ -30,13 +30,13 @@ public class PruebaEjercicio {
 			
 			switch (menu) {
 			case 1:
-				insertar();
+				insertar(conn);
 				break;
 			case 2:
-				eliminar();
+				eliminar(conn);
 				break;
 			case 3:
-				modificar();
+				modificar(conn);
 				break;
 			case 4:
 				try {
@@ -56,7 +56,7 @@ public class PruebaEjercicio {
 	}
 	/**
 	 * En un futuro se podría integrar para pedir por pantalla la conexion
-	 * @return una conexión con la base de datos 
+	 * @return Connection con la base de datos 
 	 */
 	public static Connection conexionBBDD() {
 		
@@ -102,15 +102,30 @@ public class PruebaEjercicio {
 		}
 	}
 	
-	public static void insertar() {
+	public static void insertar(Connection c) {
 		
 	}
+	/**
+	 * Elimina productos según su id
+	 * @param Connection con la BBDD
+	 */
+	public static void eliminar(Connection c) {
+		int id=Utilidades.pedirEntero("¿Que id de Producto quieres eliminar?");
+		
+		try {
+			Statement st = c.createStatement();
+			
+			String del = "DELETE FROM productos WHERE idProducto="+id;
+			int afected = st.executeUpdate(del);
+			if (afected==0) {
+				System.out.println("No hay ningún registro con ese id");
+			}else System.out.println("Productos afectados: " + afected);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	
-	public static void eliminar() {
-		
 	}
-	private static void modificar() {
-		// TODO Auto-generated method stub
+	private static void modificar(Connection c) {
 		
 	}
 
