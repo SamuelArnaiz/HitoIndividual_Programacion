@@ -1,6 +1,8 @@
 package cuestion3;
 
 import java.sql.*;
+import java.time.LocalDate;
+
 import cuestion2.Utilidades;
 
 public class PruebaEjercicio {
@@ -103,7 +105,28 @@ public class PruebaEjercicio {
 	}
 	
 	public static void insertar(Connection c) {
-		
+		try {
+			Statement st = c.createStatement();
+			String nombre = Utilidades.pedirTexto("Dame el nombre de Producto: ");
+			int year = Utilidades.pedirYear("Dime el año de envasado:");
+			int mes = Utilidades.pedirMes("Dame el mes de envasado:");
+			int dia = Utilidades.pedirDia("Dime el día de envasado:", mes, year);
+			LocalDate fechaEnvasado = LocalDate.of(year,mes,dia);
+			int unidades = Utilidades.pedirEntero("¿De cuántas unidades se disponen?");
+			double precio = Utilidades.pedirDecimal("¿Cuál es su precio?");
+			boolean disponible;
+			
+			if(Utilidades.pedirChar("El producto está disponible en almacen? s|n")=='s') {
+				disponible = true;
+			}else disponible = false;
+			
+			String add = "INSERT INTO productos (nombre,fechaEnvasado,unidades,precio,disponible) VALUES('"+ nombre+"','"+ fechaEnvasado+"',"+unidades+","+precio +
+					","+ disponible+")";
+			st.executeUpdate(add);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	/**
 	 * Elimina productos según su id
