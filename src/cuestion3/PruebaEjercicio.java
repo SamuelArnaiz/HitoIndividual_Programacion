@@ -129,7 +129,6 @@ public class PruebaEjercicio {
 			if(result == 1) {
 				System.out.println("Añadido el registro");
 			}else System.out.println("No se ha podido añadir");
-			
 		} catch (SQLException e) {
 			System.out.println("Problema con la conexión a la BBDD");
 		}
@@ -258,8 +257,8 @@ public class PruebaEjercicio {
 					nuevDisp1 = true;
 				}
 				
-				String updTodo = "UPDATE productos set nombre'" + nuevoNombre + "', fechaEnvasado='" + fechaEnvasado + "', unidades="+ nuevUnid+ ", precio="+ nuevPrecio
-						+ ", disponible=" + nuevDisp1+" where idProducto="+id;
+				String updTodo = "UPDATE productos SET nombre='" + nuevoNombre + "', fechaEnvasado='" + fechaEnvasado + "', unidades="+ nuevUnid+ ", precio="+ nuevPrecio
+						+ ", disponible=" + nuevDisp1+" where idproducto="+id;
 				result = st.executeUpdate(updTodo);
 				if(result==1) {
 					System.out.println("Modificado correctamente");
