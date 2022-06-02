@@ -55,6 +55,12 @@ public class PruebaEjercicio {
 				break;
 			}
 		}while (menu<5&&menu>=0);
+		
+		try {
+			conn.close();
+		} catch (SQLException e) {
+			System.out.println("No ha sido posible desconectarse");
+		}
 	}
 	/**
 	 * En un futuro se podría integrar para pedir por pantalla la conexion
@@ -129,6 +135,7 @@ public class PruebaEjercicio {
 			if(result == 1) {
 				System.out.println("Añadido el registro");
 			}else System.out.println("No se ha podido añadir");
+			st.close();
 		} catch (SQLException e) {
 			System.out.println("Problema con la conexión a la BBDD");
 		}
@@ -148,12 +155,17 @@ public class PruebaEjercicio {
 			if (afected==0) {
 				System.out.println("No hay ningún registro con ese id");
 			}else System.out.println("Productos afectados: " + afected);
+			st.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	
 	}
-	
+	/**
+	 * Modificar un producto a partir de su ID(Se muestra antes de ser modificado), el usuario tiene que decidir 
+	 * que campo quiere modificar o si quiere modificar el producto al completo
+	 * @param Connection con BBDD
+	 */
 	private static void modificar(Connection c) {
 		int id = Utilidades.pedirEntero("Dame el id del producto que quieras modificar: ");
 		
@@ -266,6 +278,8 @@ public class PruebaEjercicio {
 			default:
 				break;
 			}
+			r.close();
+			st.close();
 			
 		} catch (SQLException e) {
 			System.out.println("Problema con la conexión");

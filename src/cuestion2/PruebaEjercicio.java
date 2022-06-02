@@ -33,7 +33,12 @@ public class PruebaEjercicio {
 					pregunta = brp.readLine();
 					respuesta = brr.readLine();
 				}
-				System.out.println("Has sacado un: " + nota);	//Impresión de la nota final
+				System.out.println("Has sacado un: " + nota);//Impresión de la nota final
+				
+				if(nota>=5) {
+					System.out.println("ENHORABUENA!!!!");
+				}else System.out.println("LA PRÓXIMA VEZ SACARÁS MÁS NOTA!!!");
+				
 			}catch (IOException e) {
 				System.out.println("Error en la ejecución");
 			}
