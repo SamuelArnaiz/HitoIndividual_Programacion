@@ -123,10 +123,10 @@ public class PruebaEjercicio {
 				disponible = true;
 			}else disponible = false;
 			
-			String add = "INSERT INTO productos (nombre,fechaEnvasado,unidades,precio,disponible) VALUES('"+ nombre
+			String add = "INSERT INTO productos(nombre,fechaEnvasado,unidades,precio,disponible) VALUES('"+ nombre
 					+"','"+ fechaEnvasado+"',"+unidades+","+precio +","+ disponible+")";
-			
-			if(st.executeUpdate(add) == 1) {
+			int result = st.executeUpdate(add);
+			if(result == 1) {
 				System.out.println("Añadido el registro");
 			}else System.out.println("No se ha podido añadir");
 			
@@ -154,34 +154,123 @@ public class PruebaEjercicio {
 		}
 	
 	}
+	
 	private static void modificar(Connection c) {
 		int id = Utilidades.pedirEntero("Dame el id del producto que quieras modificar: ");
 		
 		try {
 			Statement st = c.createStatement();
 			ResultSet r = st.executeQuery("SELECT * FROM productos where idProducto= "+ id);
-			while(r.next()) {
-				System.out.println("ID: " + r.getInt("idProducto"));
-				System.out.println("Nombre: " + r.getString("nombre"));
-				System.out.println("Fecha de Envasado: " + r.getDate("fechaEnvasado"));
-				System.out.println("Unidades: " + r.getInt("unidades"));
-				System.out.println("Precio: " + r.getFloat("precio"));
-				System.out.println("Disponible: "+ r.getBoolean("disponible"));
-				System.out.println("--------------------------------------");
+			if(r.next()) {
+				do {
+					System.out.println("ID: " + r.getInt("idProducto"));
+					System.out.println("Nombre: " + r.getString("nombre"));
+					System.out.println("Fecha de Envasado: " + r.getDate("fechaEnvasado"));
+					System.out.println("Unidades: " + r.getInt("unidades"));
+					System.out.println("Precio: " + r.getFloat("precio"));
+					System.out.println("Disponible: "+ r.getBoolean("disponible"));
+					System.out.println("--------------------------------------");
+				}while(r.next());
+			}else {
+				System.out.println("No hay ningún artículo con este id");
+				return;
 			}
+			int opcion;
+			System.out.println("¿Qué quieres cambiar?");
+			System.out.println("1. Nombre.");
+			System.out.println("2. Fecha de Envasado.");
+			System.out.println("3.Unidades.");
+			System.out.println("4.Precio.");
+			System.out.println("5.Disponibilidad.");
+			System.out.println("6.Todos los datos.");
 			
+			do {
+				opcion=Utilidades.pedirEntero("");
+				if(opcion<1||opcion>6) {
+					System.out.println("Valor incorrecto");
+				}
+			}while(opcion<1||opcion>6);
 			
+			switch (opcion) {
+			case 1: //NOMBRE
+				String nuevoNombre=Utilidades.pedirTexto("Dame el nombre: ");
+				String updNombre = "UPDATE productos set nombre='"+nuevoNombre + "' where idproducto="+id;
+				int registro = st.executeUpdate(updNombre);
+				if(registro==1) {
+					System.out.println("Modificado correctamente");
+				}
+				break;
+			case 2: //FECHA ENVASADO
+				int year = Utilidades.pedirYear("Dime el año de envasado:");
+				int mes = Utilidades.pedirMes("Dame el mes de envasado:");
+				int dia = Utilidades.pedirDia("Dime el día de envasado:", mes, year);
+				LocalDate fechaEnvasado = LocalDate.of(year,mes,dia);
+				String updFecha = "UPDATE productos set fechaEnvasado='"+fechaEnvasado + "' where idproducto="+id;
+				int result = st.executeUpdate(updFecha);
+				if(result==1) {
+					System.out.println("Modificado correctamente");
+				}
+				break;
+			case 3: //UNIDADES
+				int nuevUnid=Utilidades.pedirEntero("¿Cuántas unidades?");
+				String updUnid = "UPDATE productos set unidades="+nuevUnid+ " where idproducto="+id;
+				result = st.executeUpdate(updUnid);
+				if(result==1) {
+					System.out.println("Modificado correctamente");
+				}
+				break;
+			case 4: //PRECIO
+				double nuevPrecio=Utilidades.pedirDecimal("Dame el nuevo precio: ");
+				String updPrecio = "UPDATE productos set precio="+nuevPrecio+ " where idproducto="+id;
+				result = st.executeUpdate(updPrecio);
+				if(result==1) {
+					System.out.println("Modificado correctamente");
+				}
+				break;
+			case 5: //Disponibilidad
+				String nuevDisp = Utilidades.pedirTexto("Disponibilidad del producto: s|n : ");
+				boolean nuevDisp1=false;
+				if(nuevDisp.equalsIgnoreCase("S")) {
+					nuevDisp1 = true;
+				}
+				String updDisp = "UPDATE productos set disponible="+nuevDisp1+ " where idproducto="+id;
+				result = st.executeUpdate(updDisp);
+				if(result==1) {
+					System.out.println("Modificado correctamente");
+				}
+				break;
+			case 6:	//MODIFICAR TODO
+				//NOMBRE
+				nuevoNombre=Utilidades.pedirTexto("Dame el nombre: ");
+				//Fecha Envasado
+				year = Utilidades.pedirYear("Dime el año de envasado:");
+				mes = Utilidades.pedirMes("Dame el mes de envasado:");
+				dia = Utilidades.pedirDia("Dime el día de envasado:", mes, year);
+				fechaEnvasado = LocalDate.of(year,mes,dia);
+				//UNIDADES
+				nuevUnid=Utilidades.pedirEntero("¿Cuántas unidades?");
+				//PRECIO
+				nuevPrecio=Utilidades.pedirDecimal("Dame el nuevo precio: ");
+				//DISPONIBLE
+				nuevDisp = Utilidades.pedirTexto("Disponibilidad del producto: s|n : ");
+				nuevDisp1=false;
+				if(nuevDisp.equalsIgnoreCase("S")) {
+					nuevDisp1 = true;
+				}
+				
+				String updTodo = "UPDATE productos set nombre'" + nuevoNombre + "', fechaEnvasado='" + fechaEnvasado + "', unidades="+ nuevUnid+ ", precio="+ nuevPrecio
+						+ ", disponible=" + nuevDisp1+" where idProducto="+id;
+				result = st.executeUpdate(updTodo);
+				if(result==1) {
+					System.out.println("Modificado correctamente");
+				}
+			default:
+				break;
+			}
 			
 		} catch (SQLException e) {
 			System.out.println("Problema con la conexión");
 		}
-		
-		
-		
-		
-		
-		
-		
 	}
 
 }
