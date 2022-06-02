@@ -155,6 +155,32 @@ public class PruebaEjercicio {
 	
 	}
 	private static void modificar(Connection c) {
+		int id = Utilidades.pedirEntero("Dame el id del producto que quieras modificar: ");
+		
+		try {
+			Statement st = c.createStatement();
+			ResultSet r = st.executeQuery("SELECT * FROM productos where idProducto= "+ id);
+			while(r.next()) {
+				System.out.println("ID: " + r.getInt("idProducto"));
+				System.out.println("Nombre: " + r.getString("nombre"));
+				System.out.println("Fecha de Envasado: " + r.getDate("fechaEnvasado"));
+				System.out.println("Unidades: " + r.getInt("unidades"));
+				System.out.println("Precio: " + r.getFloat("precio"));
+				System.out.println("Disponible: "+ r.getBoolean("disponible"));
+				System.out.println("--------------------------------------");
+			}
+			
+			
+			
+		} catch (SQLException e) {
+			System.out.println("Problema con la conexión");
+		}
+		
+		
+		
+		
+		
+		
 		
 	}
 
